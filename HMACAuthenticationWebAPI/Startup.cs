@@ -1,4 +1,5 @@
 using HMACAuthenticationWebAPI.Config;
+using HMACAuthenticationWebAPI.Encryption;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace HMACAuthenticationWebAPI
             var webhooks = new WebHooks();
             configuration.Bind("WebHooks", webhooks);
             services.AddSingleton(webhooks);
+            services.AddScoped<AesHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

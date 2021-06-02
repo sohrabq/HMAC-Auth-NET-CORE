@@ -7,7 +7,7 @@ namespace HMACAuthenticationWebAPI.Extensions
 {
     public static class HttpRequestExtensions
     {
-        public static async Task<string> BobyToString(this HttpRequest request)
+        public static async Task<string> BodyToString(this HttpRequest request)
         {
             var body = string.Empty;
             request.EnableBuffering();

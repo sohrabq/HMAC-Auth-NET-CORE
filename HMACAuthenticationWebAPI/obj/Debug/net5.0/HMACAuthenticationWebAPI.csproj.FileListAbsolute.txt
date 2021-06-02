@@ -27,3 +27,4 @@ C:\Users\squraishi\source\repos\WebHooks\HMACAuthenticationWebAPI\obj\Debug\net5
 C:\Users\squraishi\source\repos\WebHooks\HMACAuthenticationWebAPI\obj\Debug\net5.0\ref\HMACAuthenticationWebAPI.dll
 C:\Users\squraishi\source\repos\WebHooks\HMACAuthenticationWebAPI\obj\Debug\net5.0\HMACAuthenticationWebAPI.pdb
 C:\Users\squraishi\source\repos\WebHooks\HMACAuthenticationWebAPI\obj\Debug\net5.0\HMACAuthenticationWebAPI.genruntimeconfig.cache
+C:\Users\squraishi\source\repos\WebHooks\HMACAuthenticationWebAPI\bin\Debug\net5.0\Newtonsoft.Json.dll

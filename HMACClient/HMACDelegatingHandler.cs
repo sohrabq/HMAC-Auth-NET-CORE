@@ -12,9 +12,10 @@ namespace HMACClient
     {
         // first obtained the API ID and API key from the server
         // the APIKEY must be stored securely in db or in the App.Config or AppSetting.JSON.
-        private readonly string APPId = "ad644212-adc0-44c7-a4b1-9f2ff06d550a";
-        private readonly string APIKey = "kwAg1/mZSjz34iC0nR9Luy4yP6Fhxqr0udk1kTwUSjM=";
+        private readonly string APPId = "fa687765-29df-4bae-ae0e-08d92584877a";
+        private readonly string APIKey = "AY2MScr0mQqMbP0Ey5wDA8NogB9XrsBqzTrW7XM1mDE=";
         private readonly string AuthScheme = "hmacauth";
+        public int MyProperty { get; set; }
 
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, 
             CancellationToken cancellationToken)
@@ -65,7 +66,6 @@ namespace HMACClient
             {
                 byte[] signatureBytes = hmac.ComputeHash(signature);
                 string requestSignatureBase64String = Convert.ToBase64String(signatureBytes);
-
                 // Setting the values in the authorization header using custom scheme (hmacauth)
                 request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(AuthScheme,
                     string.Format("{0}:{1}:{2}:{3}", APPId, requestSignatureBase64String, nonce, requestTimestamp));

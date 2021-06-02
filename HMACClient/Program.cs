@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace HMACClient
@@ -19,7 +22,10 @@ namespace HMACClient
             // provide the port number where your api is running
             var apiBaseAddress = "http://localhost:49626/";
 
-            HMACDelegatingHandler hMACDelegatingHandler = new();
+            HMACDelegatingHandler hMACDelegatingHandler = new()
+            {
+                MyProperty = 56
+            };
             HttpClient httpClient = HttpClientFactory.Create(hMACDelegatingHandler);
 
             var order = new Order
@@ -31,8 +37,29 @@ namespace HMACClient
                 IsShipped = true
             };
 
+            // hash the body with secret key.
+            var md5 = MD5.Create();
+            var bodyBytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(order));
+            var bodyHash = md5.ComputeHash(bodyBytes);
+
+            // get the byte array from the sharedkey 
+            var secretBytes = Convert.FromBase64String("kwAg1/mZSjz34iC0nR9Luy4yP6Fhxqr0udk1kTwUSjM=");
+
+            var hashedBody = string.Empty;
+
+            using(var hmac = new HMACSHA256(secretBytes))
+            {
+                var signatureBytes = hmac.ComputeHash(bodyHash);
+                hashedBody = Convert.ToBase64String(signatureBytes);
+            }
+
+            var encryptedBody = new
+            {
+                Content = hashedBody
+            };
+
             // call to a POST request
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync(apiBaseAddress + "api/order", order);
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync(apiBaseAddress + "api/order", encryptedBody);
 
             if (response.IsSuccessStatusCode)
             {

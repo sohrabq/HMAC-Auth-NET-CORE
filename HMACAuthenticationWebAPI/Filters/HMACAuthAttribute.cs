@@ -25,10 +25,7 @@ namespace HMACAuthenticationWebAPI.Filters
             WebHooks = webHooks;
             if (allowedApps.Count == 0)
             {
-                foreach(var app in webHooks.APPSIds)
-                {
-                    allowedApps.Add(app, webHooks.SharedKey);
-                }
+                allowedApps.Add(webHooks.AppId, webHooks.SharedKey);
             }
         }
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -102,7 +99,7 @@ namespace HMACAuthenticationWebAPI.Filters
                 return false;
             }
 
-            var _body = req.BobyToString();
+            var _body = req.BodyToString();
             byte[] hash = ComputeHash(_body.Result);
 
             if (hash != null)

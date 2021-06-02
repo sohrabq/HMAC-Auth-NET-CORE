@@ -1,5 +1,9 @@
-﻿using HMACAuthenticationWebAPI.Filters;
+﻿using HMACAuthenticationWebAPI.Encryption;
+using HMACAuthenticationWebAPI.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
 
 namespace HMACAuthenticationWebAPI.Controllers
 {
@@ -7,6 +11,12 @@ namespace HMACAuthenticationWebAPI.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
+        private readonly AesHelper aesHelper;
+
+        public OrderController(AesHelper aesHelper)
+        {
+            this.aesHelper = aesHelper;
+        }
         [HttpGet()]
         [TypeFilter(typeof(HMACAuthAttribute))]
         public IActionResult Get()
@@ -15,9 +25,17 @@ namespace HMACAuthenticationWebAPI.Controllers
         }
         [HttpPost()]
         [TypeFilter(typeof(HMACAuthAttribute))]
-        public IActionResult Post(Order order)
+        public IActionResult Post([FromBody] Body order)
         {
+            var request = HttpContext;
+            var result = aesHelper.Decrypt(order.Content);
+            Console.WriteLine(result);
             return Ok(order);
         }
+
+    }
+    public class Body
+    {
+        public string Content { get; set; }
     }
 }
